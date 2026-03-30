@@ -1,37 +1,16 @@
-{% extends 'base.html' %}
 <!DOCTYPE html>
-
+{%extends "base.html"%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Campus Connect</title>
-    <style>
-    {%include 'navbar.html' %}
-    {% block content %}
-	{% endblock %}
-        body {
-            margin: 0;
-            height: 100vh;
-            background-color: orange;
-            display: flex;
-            justify-content: top;
-            align-items: top;
-        }
-
-        a {
-            font-size: 50px;
-            font-weight: bold;
-            color: white;
-            text-decoration: none;
-            font-family: Arial, sans-serif;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Campus Connect Home</title>
+    <style> 
+        body{backg}
 </head>
 <body>
-    <a href="https://www.utrgv.edu" target="_blank">Campus Connect</a>
+    {%block content%}
+    <h3 style="text-align:left;color:blueviolet;font_family:sans-serif;">Home</h3>
+    
+    {%endblock%}
 </body>
 </html>
