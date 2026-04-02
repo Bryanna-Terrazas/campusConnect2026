@@ -9,3 +9,12 @@ class Profile(models.Model):
 
 	def __str__(self):
 		return self.user.username
+
+class User(models.Model):
+	first_name = models.TextField(blank = True)
+	last_name = models.TextField(blank = True)
+	email = models.TextField(blank = True)
+
+class Posts(models.Model):
+	subject = models.TextField(blank = True)
+	bodyofpost = models.TextField(blank = True, null = True)

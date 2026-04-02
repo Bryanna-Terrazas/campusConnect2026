@@ -35,4 +35,10 @@ def profile(request):
 	else:
 		u_form = UserUpdateForm(instance = request.user)
 		p_form = ProfileUpdateForm(instance = request.user.profile)
-	return render(request, "profile.html", {"u_form": u_form, "p_form":p_form}) 
+		return render(request, "profile.html", {"u_form": u_form, "p_form":p_form}) 
+
+def makePost(request):
+	if request.method == "POST":
+		pst_form = PostingToFeed(request.POST, instance = request.user)
+		
+	return render(request, "social.html", {})
