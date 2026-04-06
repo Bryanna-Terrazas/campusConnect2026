@@ -1,8 +1,17 @@
-<h1> Social Feed </h1>
-
+<!DOCTYPE html>
+{%extends "base.html"%}
+<html lang="en">
 <head>
-	<title>CampusConnect Social</title>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect Social</title>
+    <style> 
+        body{backg}
+    </style>
 </head>
+
+{%block content%}
+
+<h4 style="text-align:border-left;margin-left:12px;color:darkblue;font_family:sans-serif;">Social Feed</h4>
 
 <form method="post">
   {% csrf_token %}
@@ -10,8 +19,4 @@
   <button type="submit">Make Post</button>
 </form>
 
-<body>
-
-
-
-</body>
+{%endblock%}
