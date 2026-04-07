@@ -13,7 +13,7 @@
 
 <h4 style="text-align:border-left;margin-left:12px;color:darkblue;font_family:sans-serif;">Social Feed</h4>
 
-<form method="post">
+<form method="post" style="text-align:border-left;margin-left:12px;font_family:sans-serif;">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Make Post</button>
