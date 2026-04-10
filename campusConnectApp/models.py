@@ -45,4 +45,7 @@ class Event(models.Model):
 
 class Posts(models.Model):
     subject = models.TextField(blank=True)
-    bodyofpost = models.TextField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title

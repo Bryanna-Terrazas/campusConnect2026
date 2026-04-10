@@ -21,7 +21,7 @@ def register(request):
             return redirect("home")
     else:
         form = UserCreationForm()
-    return render(request, "register.html", {"form": form})
+    return render(request, 'register.html', {"form": form})
 
 
 def login_view(request):
@@ -34,7 +34,7 @@ def login_view(request):
             return redirect("home")
     else:
         form = AuthenticationForm()
-    return render(request, "login.html", {"form": form})
+    return render(request, 'login.html', {"form": form})
 
 
 def logout_view(request):
@@ -56,12 +56,12 @@ def profile(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
-    return render(request, "profile.html", {"u_form": u_form, "p_form": p_form})
+    return render(request, 'profile.html', {"u_form": u_form, "p_form": p_form})
 
 
 @login_required
 def social(request):
-    return render(request, "social.html", {})
+    return render(request, 'social.html', {})
 
 
 @login_required

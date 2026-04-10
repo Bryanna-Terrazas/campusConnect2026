@@ -16,4 +16,4 @@ class ProfileUpdateForm(forms.ModelForm):
 class PostingToFeed(forms.ModelForm):
 	class Meta:
 		model = Posts
-		fields = ['subject', 'bodyofpost']
+		fields = ['subject', 'body']
