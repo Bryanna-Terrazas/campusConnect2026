@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from .forms import UserUpdateForm, ProfileUpdateForm
-from .models import Task, Event
+from .forms import UserUpdateForm, ProfileUpdateForm, PostingToFeed
+from .models import Task, Event, Posts
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -61,6 +61,12 @@ def profile(request):
 
 @login_required
 def social(request):
+    if request.method == "POST":
+        s_form = PostingToFeed(request.POST, instance=request.user)
+        if s_form.is_valid():
+            s_form.save()
+            messages.success(request, "Posted to feed!")
+            return redirect("social")
     return render(request, 'social.html', {})
 
 

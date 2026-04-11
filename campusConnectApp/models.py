@@ -44,7 +44,7 @@ class Event(models.Model):
 
 
 class Posts(models.Model):
-    subject = models.TextField(blank=True)
+    subject = models.CharField(max_length=200)
     body = models.TextField(blank=True, null=True)
 
     def __str__(self):
