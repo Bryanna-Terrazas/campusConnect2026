@@ -6,10 +6,15 @@ CampusConnect
 Social Productivity Web Application
 
 
+# Figma Prototype
+https://www.figma.com/design/qSRjM2cBU0xlkKdKcKqbNA/CSCI-3340-04-Wireframe--Copy-?node-id=0-1&t=dvhRvytGLDpD7ZJK-1 
 
+
+# User Stories
+As a student, I want to be able to manage my time and tasks in one place.
+As a member of my campus community I want to be able to communicate with my peers and be aware of campus events.
 
 # Project Description
-
 
 CampusConnect is a web application built with Django that helps students keep track of their weekly tasks while also seeing events happening around campus. The goal of the app is to give students a simple place where they can manage their schedule and stay updated on campus activities.
 
