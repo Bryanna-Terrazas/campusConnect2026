@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def home(request):
     return render(request, 'home.html', {})
 
@@ -48,6 +49,7 @@ def profile(request):
     if request.method == "POST":
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -56,18 +58,30 @@ def profile(request):
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
+
     return render(request, 'profile.html', {"u_form": u_form, "p_form": p_form})
 
 
 @login_required
 def social(request):
     if request.method == "POST":
-        s_form = PostingToFeed(request.POST, instance=request.user)
+        s_form = PostingToFeed(request.POST)
         if s_form.is_valid():
-            s_form.save()
+            post = s_form.save(commit=False)
+            post.user = request.user
+            post.save()
             messages.success(request, "Posted to feed!")
             return redirect("social")
-    return render(request, 'social.html', {})
+    else:
+        s_form = PostingToFeed()
+
+    posts = Posts.objects.all().order_by('-id')
+    return render(request, 'social.html', {"s_form": s_form, "posts": posts})
+
+
+@login_required
+def messages_page(request):
+    return render(request, 'messages.html')
 
 
 @login_required
@@ -82,6 +96,7 @@ def task_create(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         due_date = request.POST.get('due_date')
+
         Task.objects.create(
             user=request.user,
             title=title,
@@ -90,12 +105,14 @@ def task_create(request):
         )
         messages.success(request, 'Task created!')
         return redirect('task_list')
+
     return render(request, 'task_create.html')
 
 
 @login_required
 def task_edit(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
+
     if request.method == 'POST':
         task.title = request.POST.get('title')
         task.description = request.POST.get('description')
@@ -104,16 +121,19 @@ def task_edit(request, task_id):
         task.save()
         messages.success(request, 'Task updated!')
         return redirect('task_list')
+
     return render(request, 'task_edit.html', {'task': task})
 
 
 @login_required
 def task_delete(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
+
     if request.method == 'POST':
         task.delete()
         messages.success(request, 'Task deleted!')
         return redirect('task_list')
+
     return render(request, 'task_confirm_delete.html', {'task': task})
 
 
@@ -131,6 +151,7 @@ def event_create(request):
         location = request.POST.get('location')
         date = request.POST.get('date')
         category = request.POST.get('category')
+
         Event.objects.create(
             user=request.user,
             title=title,
@@ -141,12 +162,14 @@ def event_create(request):
         )
         messages.success(request, 'Event created!')
         return redirect('event_list')
+
     return render(request, 'event_create.html')
 
 
 @login_required
 def event_edit(request, event_id):
     event = get_object_or_404(Event, id=event_id, user=request.user)
+
     if request.method == 'POST':
         event.title = request.POST.get('title')
         event.description = request.POST.get('description')
@@ -156,14 +179,17 @@ def event_edit(request, event_id):
         event.save()
         messages.success(request, 'Event updated!')
         return redirect('event_list')
+
     return render(request, 'event_edit.html', {'event': event})
 
 
 @login_required
 def event_delete(request, event_id):
     event = get_object_or_404(Event, id=event_id, user=request.user)
+
     if request.method == 'POST':
         event.delete()
         messages.success(request, 'Event deleted!')
         return redirect('event_list')
+
     return render(request, 'event_confirm_delete.html', {'event': event})
