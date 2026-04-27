@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h4>Create Task</h4>
+
+<form method="post">
+  {% csrf_token %}
+
+  <input class="form-control mb-2" name="title" placeholder="Title">
+  <textarea class="form-control mb-2" name="description" placeholder="Description"></textarea>
+  <input class="form-control mb-2" type="date" name="due_date">
+
+  <button class="btn btn-success">Create</button>
+</form>
+
+{% endblock %}

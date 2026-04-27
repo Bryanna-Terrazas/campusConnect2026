@@ -1,22 +1,27 @@
-<!DOCTYPE html>
-{%extends "base.html"%}
-<html lang="en">
-<head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Connect Events</title>
-    <style> 
-        body{backg}
-    </style>
-</head>
+{% extends "base.html" %}
 
-{%block content%}
-{%include 'navbar.html' %}
-<h4 style="text-align:border-left;margin-left:12px;color:darkblue;font_family:sans-serif;">Events</h4>
+{% block content %}
+<h4>Events</h4>
 
-<form method="post" style="text-align:border-left;margin-left:12px;font_family:sans-serif;">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Create Event</button>
-</form>
+<a class="btn btn-primary mb-3" href="{% url 'event_create' %}">Create Event</a>
 
-{%endblock%}
+<ul class="list-group">
+  {% for event in events %}
+    <li class="list-group-item d-flex justify-content-between">
+      <div>
+        <strong>{{ event.title }}</strong><br>
+        {{ event.description }}<br>
+        {{ event.date }} | {{ event.category }}
+      </div>
+
+      <div>
+        <a class="btn btn-sm btn-warning" href="{% url 'event_edit' event.id %}">Edit</a>
+        <a class="btn btn-sm btn-danger" href="{% url 'event_delete' event.id %}">Delete</a>
+      </div>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No events yet.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

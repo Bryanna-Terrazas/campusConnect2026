@@ -1,22 +1,27 @@
-<!DOCTYPE html>
-{%extends "base.html"%}
-<html lang="en">
-<head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Connect Tasks</title>
-    <style> 
-        body{backg}
-    </style>
-</head>
+{% extends "base.html" %}
 
-{%block content%}
-{%include 'navbar.html' %}
+{% block content %}
 <h4>Weekly Tasks</h4>
 
-<form method="post" style="text-align:border-left;margin-left:12px;font_family:sans-serif;">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Create Task</button>
-</form>
+<a class="btn btn-primary mb-3" href="{% url 'task_create' %}">Create Task</a>
 
-{%endblock%}
+<ul class="list-group">
+  {% for task in tasks %}
+    <li class="list-group-item d-flex justify-content-between">
+      <div>
+        <strong>{{ task.title }}</strong><br>
+        {{ task.description }}<br>
+        Due: {{ task.due_date }}
+      </div>
+
+      <div>
+        <a class="btn btn-sm btn-warning" href="{% url 'task_edit' task.id %}">Edit</a>
+        <a class="btn btn-sm btn-danger" href="{% url 'task_delete' task.id %}">Delete</a>
+      </div>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No tasks yet.</li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

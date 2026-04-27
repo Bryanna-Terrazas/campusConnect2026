@@ -1,22 +1,55 @@
-<!DOCTYPE html>
-{%extends "base.html"%}
-<html lang="en">
-<head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Connect Social</title>
-    <style> 
-        body{backg}
-    </style>
-</head>
+{% extends "base.html" %}
 
-{%block content%}
-{%include 'navbar.html' %}
-<h4>Social Feed</h4>
+{% block content %}
 
-<form method="post" style="text-align:border-left;margin-left:12px;font_family:sans-serif;">
-  {% csrf_token %}
-  {{ s_form.as_p }}
-  <button type="submit">Make Post</button>
-</form>
+<h4 class="mb-3">Social Feed</h4>
 
-{%endblock%}
+<!-- Post Form -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+
+    <form method="post">
+      {% csrf_token %}
+      {{ s_form.as_p }}
+
+      <button class="btn btn-primary w-100 mt-2">
+        Post
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Feed -->
+<div class="row justify-content-center">
+  <div class="col-md-8">
+
+    {% for post in posts %}
+      <div class="card shadow-sm mb-3">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <strong>👤 {{ post.user }}</strong>
+            <small class="text-muted">just now</small>
+          </div>
+
+          <strong>{{ post.subject }}</strong>
+          <p class="mb-0">
+            {{ post.body }}
+          </p>
+
+        </div>
+
+      </div>
+
+    {% empty %}
+      <div class="text-center text-muted">
+        No posts yet. Be the first to post!
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}
