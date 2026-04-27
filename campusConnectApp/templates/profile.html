@@ -2,29 +2,60 @@
 
 {% block content %}
 
+<h4 class="mb-3">My Profile</h4>
+
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">
 
-    <h4 class="mb-3 text-center">My Profile</h4>
-
-    <div class="card shadow-sm mb-3">
+    <div class="card shadow-sm">
       <div class="card-body">
 
         <form method="post">
           {% csrf_token %}
 
-          <h6>User Info</h6>
-          {{ u_form.as_p }}
+          <h6 class="text-primary mb-3">Account Information</h6>
+
+          {% for field in u_form %}
+            <div class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">
+                  {{ field.errors }}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
 
           <hr>
 
-          <h6>Profile Info</h6>
-          {{ p_form.as_p }}
+          <h6 class="text-primary mb-3">Profile Details</h6>
 
-          <button class="btn btn-primary w-100 mt-2">Update Profile</button>
+          {% for field in p_form %}
+            <div class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}
+                <div class="text-danger small">
+                  {{ field.errors }}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <button class="btn btn-primary w-100 mt-2">
+            Update Profile
+          </button>
+
         </form>
 
       </div>
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm">
+        Back to Dashboard
+      </a>
     </div>
 
   </div>
