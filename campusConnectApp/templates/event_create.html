@@ -12,41 +12,8 @@
 
         <form method="post">
           {% csrf_token %}
-
-          <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" name="title" class="form-control" required>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea name="description" class="form-control"></textarea>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Location</label>
-            <input type="text" name="location" class="form-control">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date" name="date" class="form-control">
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select name="category" class="form-control">
-              <option value="academic">Academic</option>
-              <option value="sports">Sports</option>
-              <option value="civil">Civil</option>
-              <option value="clubs">Clubs</option>
-            </select>
-          </div>
-
-          <button class="btn btn-success w-100">
-            Create Event
-          </button>
-
+          {{ form.as_p }}
+          <button class="btn btn-success w-100">  Create Event</button>
         </form>
 
       </div>

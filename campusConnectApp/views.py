@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from .forms import UserUpdateForm, ProfileUpdateForm, PostingToFeed
+from .forms import UserUpdateForm, ProfileUpdateForm, PostingToFeed, TaskForm
 from .models import Task, Event, Posts
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -65,18 +65,17 @@ def profile(request):
 @login_required
 def social(request):
     if request.method == "POST":
-        s_form = PostingToFeed(request.POST)
-        if s_form.is_valid():
-            post = s_form.save(commit=False)
+        form = PostingToFeed(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
             post.user = request.user
             post.save()
-            messages.success(request, "Posted to feed!")
             return redirect("social")
     else:
-        s_form = PostingToFeed()
+        form = PostingToFeed()
 
     posts = Posts.objects.all().order_by('-id')
-    return render(request, 'social.html', {"s_form": s_form, "posts": posts})
+    return render(request, "social.html", {"s_form": form, "posts": posts})
 
 
 @login_required
@@ -90,23 +89,22 @@ def task_list(request):
     return render(request, 'tasks.html', {'tasks': tasks})
 
 
+from .forms import TaskForm
+
 @login_required
 def task_create(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        due_date = request.POST.get('due_date')
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.user = request.user
+            task.save()
+            messages.success(request, 'Task created!')
+            return redirect('task_list')
+    else:
+        form = TaskForm()
 
-        Task.objects.create(
-            user=request.user,
-            title=title,
-            description=description,
-            due_date=due_date or None
-        )
-        messages.success(request, 'Task created!')
-        return redirect('task_list')
-
-    return render(request, 'task_create.html')
+    return render(request, 'task_create.html', {'form': form})
 
 
 @login_required
@@ -114,15 +112,15 @@ def task_edit(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
 
     if request.method == 'POST':
-        task.title = request.POST.get('title')
-        task.description = request.POST.get('description')
-        task.due_date = request.POST.get('due_date') or None
-        task.completed = 'completed' in request.POST
-        task.save()
-        messages.success(request, 'Task updated!')
-        return redirect('task_list')
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Task updated!')
+            return redirect('task_list')
+    else:
+        form = TaskForm(instance=task)
 
-    return render(request, 'task_edit.html', {'task': task})
+    return render(request, 'task_edit.html', {'form': form})
 
 
 @login_required
@@ -143,27 +141,22 @@ def event_list(request):
     return render(request, 'events.html', {'events': events})
 
 
+from .forms import EventForm
+
 @login_required
 def event_create(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        location = request.POST.get('location')
-        date = request.POST.get('date')
-        category = request.POST.get('category')
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            messages.success(request, 'Event created!')
+            return redirect('event_list')
+    else:
+        form = EventForm()
 
-        Event.objects.create(
-            user=request.user,
-            title=title,
-            description=description,
-            location=location,
-            date=date or None,
-            category=category
-        )
-        messages.success(request, 'Event created!')
-        return redirect('event_list')
-
-    return render(request, 'event_create.html')
+    return render(request, 'event_create.html', {'form': form})
 
 
 @login_required
@@ -171,16 +164,15 @@ def event_edit(request, event_id):
     event = get_object_or_404(Event, id=event_id, user=request.user)
 
     if request.method == 'POST':
-        event.title = request.POST.get('title')
-        event.description = request.POST.get('description')
-        event.location = request.POST.get('location')
-        event.date = request.POST.get('date') or None
-        event.category = request.POST.get('category')
-        event.save()
-        messages.success(request, 'Event updated!')
-        return redirect('event_list')
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Event updated!')
+            return redirect('event_list')
+    else:
+        form = EventForm(instance=event)
 
-    return render(request, 'event_edit.html', {'event': event})
+    return render(request, 'event_edit.html', {'form': form})
 
 
 @login_required

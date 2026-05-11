@@ -30,11 +30,14 @@
         <div class="card-body">
 
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <strong>👤 {{ post.user }}</strong>
-            <small class="text-muted">just now</small>
+            <strong>👤 {{ post.user.username }}</strong>
+            <small class="text-muted">
+              {{ post.created_at|timesince }} ago
+            </small>
           </div>
 
-          <strong>{{ post.subject }}</strong>
+          <h6 class="fw-bold">{{ post.subject }}</h6>
+
           <p class="mb-0">
             {{ post.body }}
           </p>
