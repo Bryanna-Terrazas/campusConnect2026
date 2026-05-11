@@ -212,3 +212,11 @@ def post_delete(request, post_id):
         return redirect("social")
 
     return render(request, "post_confirm_delete.html", {"post": post})
+
+@login_required
+def profile_delete(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('login')
+    return render(request, 'profile_confirm_delete.html')
+    

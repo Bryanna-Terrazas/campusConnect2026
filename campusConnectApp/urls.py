@@ -19,4 +19,6 @@ urlpatterns = [
     path('messages/', views.messages_page, name='messages'),
     path('social/edit/<int:post_id>/', views.post_edit, name='post_edit'),
     path('social/delete/<int:post_id>/', views.post_delete, name='post_delete'),
+    path('profile/delete/', views.profile_delete, name='profile_delete'),
+    
 ]
