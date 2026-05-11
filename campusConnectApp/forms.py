@@ -48,7 +48,7 @@ class PostingToFeed(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'due_date', 'completed']
+        fields = ['title', 'description', 'due_date']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
