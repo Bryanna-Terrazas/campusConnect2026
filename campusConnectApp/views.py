@@ -5,7 +5,8 @@ from .forms import UserUpdateForm, ProfileUpdateForm, PostingToFeed, TaskForm
 from .models import Task, Event, Posts
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from .models import Conversation, Message
+from django.contrib.auth.models import User
 
 @login_required
 def home(request):
@@ -77,10 +78,6 @@ def social(request):
     posts = Posts.objects.all().order_by('-id')
     return render(request, "social.html", {"s_form": form, "posts": posts})
 
-
-@login_required
-def messages_page(request):
-    return render(request, 'messages.html')
 
 
 @login_required
@@ -220,3 +217,51 @@ def profile_delete(request):
         return redirect('login')
     return render(request, 'profile_confirm_delete.html')
     
+@login_required
+def messages_page(request):
+    conversations = Conversation.objects.filter(participants=request.user)
+    users = User.objects.all()
+
+    return render(request, "messages.html", {
+        "conversations": conversations,
+        "users": users
+    })
+
+@login_required
+def conversation_detail(request, convo_id):
+    convo = get_object_or_404(Conversation, id=convo_id)
+
+    if request.method == "POST":
+        Message.objects.create(
+            conversation=convo,
+            sender=request.user,
+            body=request.POST.get("body")
+        )
+        return redirect("conversation_detail", convo_id=convo.id)
+
+    convo_messages = convo.messages.order_by("timestamp")
+
+    return render(request, "conversation.html", {
+        "conversation": convo,
+        "messages": convo_messages
+    })
+
+@login_required
+def start_chat(request, user_id):
+    other_user = get_object_or_404(User, id=user_id)
+
+    # prevent chatting with yourself
+    if other_user == request.user:
+        return redirect("messages")
+
+    # check if conversation already exists
+    convo = Conversation.objects.filter(participants=request.user)\
+        .filter(participants=other_user)\
+        .first()
+
+    # if not, create it
+    if not convo:
+        convo = Conversation.objects.create()
+        convo.participants.add(request.user, other_user)
+
+    return redirect("conversation_detail", convo_id=convo.id)
