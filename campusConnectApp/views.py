@@ -185,3 +185,30 @@ def event_delete(request, event_id):
         return redirect('event_list')
 
     return render(request, 'event_confirm_delete.html', {'event': event})
+
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Posts, id=post_id, user=request.user)
+
+    if request.method == "POST":
+        form = PostingToFeed(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post updated!")
+            return redirect("social")
+    else:
+        form = PostingToFeed(instance=post)
+
+    return render(request, "post_edit.html", {"form": form})
+
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Posts, id=post_id, user=request.user)
+
+    if request.method == "POST":
+        post.delete()
+        messages.success(request, "Post deleted!")
+        return redirect("social")
+
+    return render(request, "post_confirm_delete.html", {"post": post})
