@@ -27,7 +27,7 @@
 
   <div class="container py-4">
 
-    {% if messages %}
+    {% if messages and request.resolver_match.url_name != "conversation_detail" and request.resolver_match.url_name != "messages" %}
       {% for message in messages %}
         <div class="alert alert-info alert-dismissible fade show" role="alert">
           {{ message }}

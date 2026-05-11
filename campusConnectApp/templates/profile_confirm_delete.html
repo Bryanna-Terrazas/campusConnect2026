@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h4 class="mb-3 text-danger">Delete Account</h4>
+
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-5">
+
+    <div class="card shadow-sm border-danger">
+      <div class="card-body text-center">
+
+        <div style="font-size: 2rem;">⚠️</div>
+
+        <h5 class="mt-2">Are you sure?</h5>
+
+        <p class="text-muted">
+          This action is permanent. Your profile, tasks, events, and posts will be removed.
+        </p>
+
+        <form method="post">
+          {% csrf_token %}
+
+          <button type="submit" class="btn btn-danger w-100 mb-2">
+            Yes, Delete My Account
+          </button>
+
+        </form>
+
+        <a href="{% url 'profile' %}" class="btn btn-outline-secondary w-100">
+          Cancel
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

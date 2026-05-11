@@ -213,12 +213,19 @@ def post_delete(request, post_id):
 @login_required
 def profile_delete(request):
     if request.method == 'POST':
-        request.user.delete()
+        user = request.user
+        logout(request)
+        user.delete()
         return redirect('login')
+
     return render(request, 'profile_confirm_delete.html')
-    
+
+from django.contrib.messages import get_messages    
 @login_required
 def messages_page(request):
+    storage = get_messages(request)
+    for _ in storage:
+        pass
     conversations = Conversation.objects.filter(participants=request.user)
     users = User.objects.all()
 
@@ -227,8 +234,12 @@ def messages_page(request):
         "users": users
     })
 
+from django.contrib.messages import get_messages
 @login_required
 def conversation_detail(request, convo_id):
+    storage = get_messages(request)
+    for _ in storage:
+        pass
     convo = get_object_or_404(Conversation, id=convo_id)
 
     if request.method == "POST":

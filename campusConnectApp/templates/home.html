@@ -57,13 +57,30 @@ body {
         </div>
     </div>
 
+    <!-- Messages -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+        <div class="card card-tile shadow-sm text-center p-3 position-relative"
+             onclick="location.href='/messages/';"
+             style="cursor:pointer;">
+
+            <!-- Notification dot -->
+            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New messages</span>
+            </span>
+
+            <div class="icon">💬</div>
+            <h5>Messages</h5>
+            <p class="small text-muted">Chat with classmates</p>
+        </div>
+    </div>
+
     <!-- Social -->
     <div class="col-12 col-md-6 col-lg-4 mb-3">
         <div class="card card-tile shadow-sm text-center p-3"
              onclick="location.href='/social/';"
              style="cursor:pointer;">
 
-            <div class="icon">💬</div>
+            <div class="icon">👤</div>
             <h5>Social Feed</h5>
             <p class="small text-muted">See what others are posting</p>
         </div>
