@@ -25,55 +25,63 @@
   <div class="col-md-8">
 
     {% for post in posts %}
+
       <div class="card shadow-sm mb-3">
 
         <div class="card-body">
 
-  <div class="d-flex justify-content-between align-items-center mb-2">
-    <strong>👤 {{ post.user.username }}</strong>
-    <small class="text-muted">
-      {{ post.created_at|timesince }} ago
-    </small>
-  </div>
+          <!-- Header -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
 
-  <h6 class="fw-bold">{{ post.subject }}</h6>
+            <strong>
+              👤 {{ post.user.username }}
+            </strong>
 
-  <p class="mb-3">
-    {{ post.body }}
-  </p>
+            <small class="text-muted">
+              {{ post.created_at|timesince }} ago
+            </small>
 
-  <!-- ACTIONS (SAFE ADDITION - DOES NOT BREAK LAYOUT) -->
-  <div class="d-flex gap-2">
+          </div>
 
-    <a href="{% url 'post_edit' post.id %}"
-       class="btn btn-sm btn-warning">
-      Edit
-    </a>
+          <!-- Subject -->
+          <h6 class="fw-bold">
+            {{ post.subject }}
+          </h6>
 
-    <form method="post"
-          action="{% url 'post_delete' post.id %}"
-          style="display:inline;">
+          <!-- Body -->
+          <p class="mb-2">
+            {{ post.body }}
+          </p>
 
-      {% csrf_token %}
+          <!-- Owner Controls -->
+          {% if post.user == request.user %}
 
-      <button type="submit"
-              class="btn btn-sm btn-danger"
-              onclick="return confirm('Delete this post?');">
-        Delete
-      </button>
+            <div class="d-flex gap-2 mt-3">
 
-    </form>
+              <a href="{% url 'post_edit' post.id %}"
+                 class="btn btn-warning btn-sm">
+                Edit
+              </a>
 
-  </div>
+              <a href="{% url 'post_delete' post.id %}"
+                 class="btn btn-danger btn-sm">
+                Delete
+              </a>
 
-</div>
+            </div>
+
+          {% endif %}
+
+        </div>
 
       </div>
 
     {% empty %}
+
       <div class="text-center text-muted">
         No posts yet. Be the first to post!
       </div>
+
     {% endfor %}
 
   </div>
